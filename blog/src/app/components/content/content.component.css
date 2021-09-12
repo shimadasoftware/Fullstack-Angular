@@ -1,0 +1,86 @@
+.list-group-item.active {
+	color: black;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.list-group-item-action:hover, .list-group-item-action:focus {
+	z-index: 1;
+	color: #495057;
+	text-decoration: none;
+	background-color: rgb(170, 167, 167)
+}
+
+.img-thumbnail {
+	background-color: #fff;
+}
+
+.fst-italic {
+	font-style: italic !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+.lead {
+	font-size: 0.9rem;
+	font-weight: 100;
+}
+
+.my-3 {
+	margin-top: 1rem !important;
+	margin-bottom: 1rem !important;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.col-auto {
+	flex: 0 0 auto;
+	width: auto;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -5px;
+	margin-left: -5px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.row-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.abs-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20rem;
+}
+
+.navbar {
+	margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+:hover.hand {
+  background: linear-gradient(
+                45deg,
+                rgba(31, 245, 206, 0.5),
+                rgba(131, 87, 200, 0.5) 100%
+              );
+}
+
