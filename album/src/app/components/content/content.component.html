@@ -1,0 +1,244 @@
+<main>
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light text-center">Welcome to the exhibition of series of paintings by Claude Monet!</h1>
+        &nbsp;
+        <p class="lead text-muted">Oscar-Claude Monet (1840 – 1926) was a French painter, a founder of French Impressionist painting and the most consistent and prolific practitioner of the movement's philosophy of expressing one's perceptions before nature, especially as applied to plein air landscape painting.</p>
+          <p>
+            <a href="#" class="btn btn-primary my-2" (click)="openModalCreate(createModal)">Create</a>
+          </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="album py-2 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col g-3 row-flex" *ngFor="let objPic of arrayPaintings"
+        (click)="choose(objPic)" [class.active]="objPic == paintingSelected">
+          <div class="card shadow-sm hand">
+            <img
+            class="content"
+            width="338"
+            height="338"
+            src={{objPic.pictBase64}}>
+            <div class="card-body">
+              <h3 class="mb-0">{{objPic.paintingName}}</h3>
+              <br/>
+              <a class="text-muted fw-bold abs-center" (click)="openModalDescription(description, objPic)">Description</a>
+              &nbsp;
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalUpdate(updateModal, objPic)">Update</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalDelete(deleteConfirmModal, objPic)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="text-center p-4 p-md-8 mb-4 text-white rounded bg-dark">
+    <p class="float-right">
+      <a class="text-info" href="#">Back to top</a>
+    </p>
+    <p>Album example is &copy; <strong>Taken from bootstrap, personalized by Juana Valentina Mendoza Santamaría.</strong></p>
+    <p>Full Stack Subject - <a class="text-info" target="_blank" href="https://github.com/shimadasoftware">To see the source code visit</a></p>
+    <p><a>2021-01</a></p>
+</footer>
+
+<!-- Modal delete-->
+<ng-template #deleteConfirmModal>
+  <div class="modal-header text-white bg-dark" style="padding: 4px;">
+    <h4 class="modal-title pull-left" style="padding: 5px;">{{modalTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">{{modalText}}<br/><strong>{{modalContent}}</strong></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="btnDelete()">Delete</button>
+    <button type="button" class="btn btn-outline-primary" (click)="btnCancel()">Cancel</button>
+  </div>
+</ng-template>
+
+<!-- Modal update -->
+<ng-template #updateModal>
+  <div class="modal-header text-white bg-dark" style="padding: 4px;">
+    <h4 class="modal-title pull-left" style="padding: 5px;">{{modalTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">{{modalText}}<strong> {{modalContent}}</strong></div>
+  <div class="container col-md-12 rounded bg-light">
+    <form>
+      <div class="form-group space">
+        <label for="name"><a class="text-info">Painting Name</a></label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          [(ngModel)]="paintingSelected.paintingName"/>
+      </div>
+      <div class="form-group">
+        <label for="start"><a class="text-info">Starting year</a></label>
+        <input
+          type="number"
+          class="form-control"
+          id="start"
+          name="start"
+          [(ngModel)]="paintingSelected.startYear"/>
+      </div>
+      <div class="form-group">
+        <label for="end"><a class="text-info">Ending year</a></label>
+        <input
+          type="number"
+          class="form-control"
+          id="end"
+          name="end"
+          [(ngModel)]="paintingSelected.endingYear"/>
+      </div>
+      <div class="form-group">
+        <label for="description"><a class="text-info">Description</a></label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="description"
+          rows="6"
+          type="text"
+          [(ngModel)]="paintingSelected.description">
+        </textarea>
+      </div>
+      <div class="form-group">
+        <label for="picture"><a class="text-info">Picture</a></label>
+        <div class="input-group-append">
+          <input
+            type="text"
+            class="form-control"
+            id="picture"
+            name="picture"
+            [(ngModel)]="paintingSelected.picture"
+            accept="image/x-png, image/x-jpeg, image/x-gif"/>
+          <button type="button" class="btn btn-info btn-sm" (click)="fileinput.click()">
+            <span>+</span>
+            <input type="file" style="display:none;" #fileinput (change)="choosePicture($event)"/></button>
+        </div>
+      </div>
+      <div class="text-right mb-3">
+        <img [src]="paintingSelected.pictBase64"
+              alt="lose picture"
+              class="img-thumbnail"
+              style="height: 100%; width: 100%;"
+              onerror="this.src='../../assets/img/nopicture.png';"/>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="updatePainting()">Save changes</button>
+    <button type="button" class="btn btn-outline-danger" (click)="btnCancel()">Cancel</button>
+  </div>
+</ng-template>
+
+<!-- Modal create -->
+<ng-template #createModal>
+  <div class="modal-header text-white bg-dark" style="padding: 4px;">
+    <h4 class="modal-title pull-left" style="padding: 5px;">{{modalTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">{{modalText}}<strong> {{modalContent}}</strong></div>
+  <div class="container col-md-12 rounded bg-light">
+    <form>
+      <div class="form-group space">
+        <label for="name"><a class="text-info">Painting Name</a></label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          [(ngModel)]="paintingSelected.paintingName"/>
+      </div>
+      <div class="form-group">
+        <label for="start"><a class="text-info">Starting year</a></label>
+        <input
+          type="number"
+          class="form-control"
+          id="start"
+          name="start"
+          [(ngModel)]="paintingSelected.startYear"/>
+      </div>
+      <div class="form-group">
+        <label for="end"><a class="text-info">Ending year</a></label>
+        <input
+          type="number"
+          class="form-control"
+          id="end"
+          name="end"
+          [(ngModel)]="paintingSelected.endingYear"/>
+      </div>
+      <div class="form-group">
+        <label for="description"><a class="text-info">Description</a></label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="description"
+          rows="6"
+          type="text"
+          [(ngModel)]="paintingSelected.description">
+        </textarea>
+      </div>
+      <div class="form-group">
+        <label for="picture"><a class="text-info">Picture</a></label>
+        <div class="input-group-append">
+          <input
+            type="text"
+            class="form-control"
+            id="picture"
+            name="picture"
+            [(ngModel)]="paintingSelected.picture"
+            accept="image/x-png, image/x-jpeg, image/x-gif"/>
+          <button type="button" class="btn btn-info btn-sm" (click)="fileinput.click()">
+            <span>+</span>
+            <input type="file" style="display:none;" #fileinput (change)="choosePicture($event)"/></button>
+        </div>
+      </div>
+      <div class="text-right mb-3">
+        <img [src]="paintingSelected.pictBase64"
+              alt="lose picture"
+              class="img-thumbnail"
+              style="height: 100%; width: 100%;"
+              onerror="this.src='../../assets/img/nopicture.png';"/>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="createPainting()">
+      Save changes</button>
+    <button type="button" class="btn btn-outline-danger" (click)="btnCancel()">Cancel</button>
+  </div>
+</ng-template>
+
+<!-- Modal description -->
+<ng-template #description>
+  <div class="modal-header text-white bg-dark" style="padding: 4px;">
+    <h4 class="modal-title pull-left" style="padding: 5px;">{{modalTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body mb-0 text-info"><br/><h4>{{modalContent}}</h4>
+    <p class="mb-1 text-muted">({{modalStart}} - {{modalEnd}})</p>
+  </div>
+
+  <div class="modal-body">{{modalText}}<br/><br/></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="btnCancel()">Close</button>
+  </div>
+</ng-template>
